@@ -8,12 +8,12 @@
 
 namespace TweetSearch\SearchBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class ImportTweetCommand extends Command
+class ImportTweetCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
@@ -32,49 +32,10 @@ class ImportTweetCommand extends Command
             return 0;
         }
 
-        $count = 0;
-        $fp = file($filename, FILE_SKIP_EMPTY_LINES);
-        $count = count($fp);
-
+        $count = 729;
         $progress = new ProgressBar($output, $count);
 
         $output->writeln("<info>Starting the import of $count tweets from the file : $filename</info>");
-
-        /**
-         * 0 created_at
-         * 1 hashtags
-         * 2 media
-         * 3 urls
-         * 4 favorite_count
-         * 5 id (tweeterReference)
-         * 6 in_reply_to_screen_name
-         * 7 in_reply_to_status_id
-         * 8 in_reply_to_user_id
-         * 9 lang
-         * 10 place
-         * 11 possibly_sensitive
-         * 12 retweet_count
-         * 13 reweet_id
-         * 14 retweet_screen_name
-         * 15 source
-         * 16 text
-         * 17 tweet_url
-         * 18 user_created_at
-         * 19 user_screen_name
-         * 20 user_default_profile_image
-         * 21 user_description
-         * 22 user_favourites_count
-         * 23 user_followers_count
-         * 24 user_friends_count
-         * 25 user_listed_count
-         * 26 user_location
-         * 27 user_name
-         * 28 user_screen_name
-         * 29 user_statuses_count
-         * 30 user_time_zone
-         * 31 user_urls
-         * 32 user_verified
-         */
 
         $headers = [];
         $line = 0;
@@ -83,7 +44,16 @@ class ImportTweetCommand extends Command
                 if ($line != 0) {
                     $progress->advance();
 
-                    
+                    $tweet = $this->getContainer()->get("tweet_search.manager.tweet")->create();
+
+                    foreach ($headers as $key => $str) {
+                        $functionName = "set".$this->formatToFunctionName($str);
+                        if (method_exists($tweet, $functionName)) {
+                            $tweet->$functionName(urlencode($fileContent[$key]));
+                        }
+                    }
+
+                    $this->getContainer()->get("tweet_search.manager.tweet")->save($tweet);
                 } else {
                     $headers = $fileContent;
                 }
@@ -111,7 +81,7 @@ class ImportTweetCommand extends Command
         return $str;
     }
 
-    static function uc_first_callback(&$str, $key) {
+    static function uc_first_callback(&$str) {
         $str = ucfirst($str);
     }
 }

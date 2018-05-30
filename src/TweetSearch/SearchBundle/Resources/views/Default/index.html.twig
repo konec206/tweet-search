@@ -1,1 +1,54 @@
-Search here!
+{% extends '@TweetSearchSearch/layout.html.twig' %}
+
+{% block title %}
+    Tweets
+{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <label for="search">Search : </label>
+        <input type="text" id="search" placeholder="Search...">
+
+        <input type="submit" value="Search" onclick="sendSearch()">
+    </div>
+
+    {% if tweets | length > 0 %}
+        <h1>Showing <span id="count_results">{{ tweets | length }}</span> tweets.</h1>
+    {% endif %}
+
+    <div id="search_result">
+        {% for tweet in tweets %}
+        {% else %}
+            <h1>No tweets provided.</h1>
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        function sendSearch() {
+            var search = $("#search").val();
+            $.ajax({
+                url: "{{ path('tweet_search_search_search') }}",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    "search": search
+                },
+                async: "true",
+                success: function (response) {
+                    var responseAsJson = JSON.parse(response);
+
+                    $("#search_result").html(responseAsJson.template);
+                    $("#count_results").html(responseAsJson.count);
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+
+            return false;
+        }
+    </script>
+{% endblock %}

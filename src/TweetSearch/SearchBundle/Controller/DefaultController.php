@@ -3,11 +3,37 @@
 namespace TweetSearch\SearchBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render("@TweetSearchSearch/Default/index.html.twig");
+        $tweetManager = $this->get("tweet_search.manager.tweet");
+
+        $tweets = $tweetManager->getAll();
+
+        return $this->render("@TweetSearchSearch/Default/index.html.twig", [
+            "tweets" => $tweets,
+        ]);
+    }
+
+    public function searchAction(Request $request)
+    {
+        $tweetManager = $this->get("tweet_search.manager.tweet");
+
+        $tweets = $tweetManager->getAll();
+
+        $template = $this->renderView("@TweetSearchSearch/Default/search.html.twig", [
+            "tweets" => $tweets,
+        ]);
+
+        $response = [
+            "template" => $template,
+            "count" => count($tweets),
+        ];
+
+        return new JsonResponse(json_encode($response));
     }
 }

@@ -1,3 +1,7 @@
 tweet_search_search_homepage:
     path:     /
     defaults: { _controller: TweetSearchSearchBundle:Default:index }
+
+tweet_search_search_search:
+    path:     /search
+    defaults: { _controller: TweetSearchSearchBundle:Default:search }

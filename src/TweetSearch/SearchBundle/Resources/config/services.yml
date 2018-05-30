@@ -1,4 +1,4 @@
 services:
-#    tweet_search_search.example:
-#        class: TweetSearch\SearchBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    tweet_search.manager.tweet:
+        class: TweetSearch\SearchBundle\Manager\TweetManager
+        arguments: ["@doctrine.orm.default_entity_manager"]
