@@ -21,13 +21,17 @@ class DefaultController extends Controller
 
     public function searchAction(Request $request)
     {
+        $searchString = $request->get("search");
+
         $tweetManager = $this->get("tweet_search.manager.tweet");
 
-        $tweets = $tweetManager->getAll();
+        $tweets = $tweetManager->search($searchString);
 
         $template = $this->renderView("@TweetSearchSearch/Default/search.html.twig", [
             "tweets" => $tweets,
         ]);
+
+        dump($tweets[0]);
 
         $response = [
             "template" => $template,

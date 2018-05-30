@@ -1,5 +1,11 @@
 {% extends "@TweetSearchSearch/empty_layout.html.twig" %}
 
 {% block content %}
-    <h1>Coucou la recherche</h1>
+    <ol>
+    {% for tweet in tweets %}
+        <li><h4>{{ tweet.userScreenName }} a tweeté avec les hashtags : {{ tweet.hashtags}}</h4></li>
+    {% else %}
+        <li><h1>No Result</h1></li>
+    {% endfor %}
+    </ol>
 {% endblock %}

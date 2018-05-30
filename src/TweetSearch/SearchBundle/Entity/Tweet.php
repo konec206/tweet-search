@@ -241,7 +241,7 @@ class Tweet
      */
     public function getHashtags()
     {
-        return $this->hashtags;
+        return urldecode(str_replace("+", " ", $this->hashtags));
     }
 
     /**

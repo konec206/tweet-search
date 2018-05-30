@@ -29,6 +29,10 @@
     <script type="text/javascript">
         function sendSearch() {
             var search = $("#search").val();
+            if (search.length < 1) {
+                alert("Veuillez rechercher quelque chose!");
+                return 0;
+            }
             $.ajax({
                 url: "{{ path('tweet_search_search_search') }}",
                 type: "POST",
