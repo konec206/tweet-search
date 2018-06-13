@@ -223,7 +223,7 @@ class Tweet
      */
     public function getCreatedAt()
     {
-        return $this->createdAt;
+        return urldecode($this->createdAt);
     }
 
     /**
@@ -493,7 +493,36 @@ class Tweet
      */
     public function getText()
     {
-        return $this->text;
+
+        $textArray = explode(' ', urldecode($this->text));
+
+        foreach ($textArray as $key => $word) {
+            $re = '/^(#|@)(\w*)/m';
+
+            $pos = strpos($word, '#');
+            if ($pos !== false && $pos === 0) {
+                preg_match_all($re, $word, $matches, PREG_SET_ORDER, 0);
+
+                dump($matches);
+                $textArray[$key] = '<a target="_blank" href="https://twitter.com/search?q='. urlencode($word) .'" class="text-info d-inline-block">' . $word . '</a>';
+            }
+
+            $pos = strpos($word, '@');
+            if ($pos !== false && $pos === 0) {
+                preg_match_all($re, $word, $matches, PREG_SET_ORDER, 0);
+                dump($matches);
+                $textArray[$key] = '<a target="_blank" href="https://twitter.com/'. urlencode($matches[0][2]) .'" class="text-info d-inline-block">' . $word . '</a>';
+            }
+
+            $posHttp = strpos($word, 'http://');
+            $posHttps = strpos($word, 'https://');
+            if (($posHttp !== false && $posHttp === 0) || ($posHttps !== false && $posHttps === 0)) {
+                $textArray[$key] = '<a target="_blank" href="'. $word .'" class="text-info d-inline-block">' . $word . '</a>';
+            }
+
+        }
+
+        return implode(' ', $textArray);
     }
 
     /**

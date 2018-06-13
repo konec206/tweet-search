@@ -147,14 +147,7 @@ class TweetManager
      */
     public function search($searchString) {
         $searchAsArray = $this->parseSearch($searchString);
-        $results = $this->doSearch($searchAsArray);
+        return $this->doSearch($searchAsArray);
 
-        foreach ($results as $result) {
-            $result
-                ->setText(urldecode($result->getText()))
-                ->setCreatedAt(urldecode($result->getCreatedAt()));
-        }
-
-        return $results;
     }
 }
