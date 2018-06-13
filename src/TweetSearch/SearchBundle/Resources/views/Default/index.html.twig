@@ -5,15 +5,17 @@
 {% endblock %}
 
 {% block content %}
-    <div class="form-container">
-        <label for="search">Search : </label>
-        <input type="text" id="search" placeholder="Search...">
-
-        <input type="submit" value="Search" onclick="sendSearch()">
+    <div class="header row align-items-center justify-content-center">
+        <img class="header--image" src="{{ asset('images/twitter_PNG28.png') }}" alt="">
+        <h1 class="header--text">TweetSearch</h1>
+    </div>
+    <div class="form-container row justify-content-center p-2">
+        <input class="form-control col-12 col-sm-9 mb-2 mb-sm-auto" type="text" id="search" placeholder="Search...">
+        <input class="btn btn-primary col-12 col-sm-2 mx-2" type="submit" value="Search" onclick="sendSearch()">
     </div>
 
     {% if tweets | length > 0 %}
-        <h1>Showing <span id="count_results">{{ tweets | length }}</span> tweets.</h1>
+    <div>Showing <span id="count_results">{{ tweets | length }}</span> tweets.</div>
     {% endif %}
 
     <div id="search_result">

@@ -1,11 +1,26 @@
 {% extends "@TweetSearchSearch/empty_layout.html.twig" %}
 
 {% block content %}
-    <ol>
+<div class="card-columns">
+
+
     {% for tweet in tweets %}
-        <li><h4>{{ tweet.userScreenName }} a tweeté avec les hashtags : {{ tweet.hashtags}}</h4></li>
+        <div class="card p-3">
+            <blockquote class="blockquote mb-0 card-body">
+                <p>{{ tweet.text }}</p>
+                <div class="d-flex justify-content-center">
+                    <div class="d-inline-block">{{ tweet.retweetCount }} <i class="fas fa-sync-alt"></i></div>
+                    <div class="d-inline-block ml-4">{{ tweet.favoriteCount }} <i class="far fa-heart"></i></div>
+                </div>
+                <footer class="blockquote-footer">
+                    <small class="text-muted">
+                        {{ tweet.userScreenName }} - {{ tweet.createdAt|date("d/m/Y \\a\\t g:ia") }}
+                    </small>
+                </footer>
+            </blockquote>
+        </div>
     {% else %}
         <li><h1>No Result</h1></li>
     {% endfor %}
-    </ol>
+</div>
 {% endblock %}

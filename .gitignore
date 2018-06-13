@@ -156,5 +156,7 @@ modules.xml
 ### Vendors ###
 /vendor/*
 
+
+/node_modules/
 # End of https://www.gitignore.io/api/symfony,intellij+all,phpstorm+all
 
