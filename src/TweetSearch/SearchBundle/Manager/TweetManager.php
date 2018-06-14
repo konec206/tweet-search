@@ -136,8 +136,6 @@ class TweetManager
             }
         }
 
-        dump($qb->getDQL());
-
         return $qb->getQuery()->getResult();
     }
 
@@ -156,5 +154,19 @@ class TweetManager
         }
 
         return $results;
+    }
+
+    /**
+     * @param $tweets
+     */
+    public function order(&$tweets, $search) {
+        $searchMetaphone = metaphone($search);
+
+        usort($tweets, function ($valueA, $valueB) use ($searchMetaphone) {
+            $metaphoneTextA = metaphone($valueA->getText());
+            $metaphoneTextB = metaphone($valueB->getText());
+
+            return levenshtein($metaphoneTextB, $searchMetaphone) - levenshtein($metaphoneTextA, $searchMetaphone);
+        });
     }
 }

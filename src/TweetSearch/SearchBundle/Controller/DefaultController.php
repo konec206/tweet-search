@@ -26,12 +26,11 @@ class DefaultController extends Controller
         $tweetManager = $this->get("tweet_search.manager.tweet");
 
         $tweets = $tweetManager->search($searchString);
+        $tweetManager->order($tweets, $searchString);
 
         $template = $this->renderView("@TweetSearchSearch/Default/search.html.twig", [
             "tweets" => $tweets,
         ]);
-
-        dump($tweets[0]);
 
         $response = [
             "template" => $template,

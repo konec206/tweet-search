@@ -241,7 +241,13 @@ class Tweet
      */
     public function getHashtags()
     {
-        return urldecode(str_replace("+", " ", $this->hashtags));
+        $hashtagsArray = explode(" ", urldecode($this->hashtags));
+        $hashtags = [];
+        array_walk($hashtagsArray, function (&$value, $key) use (&$hashtags) {
+            $hashtags[] = "#".$value;
+        });
+
+        return implode(" ", $hashtags);
     }
 
     /**
