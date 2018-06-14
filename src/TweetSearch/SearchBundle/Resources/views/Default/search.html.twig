@@ -7,7 +7,7 @@
     {% for tweet in tweets %}
         <div class="card p-3">
             <blockquote class="blockquote mb-0 card-body">
-                <p>{{ tweet.text }}</p>
+                <p>{{ tweet.text|raw }}</p>
                 <div class="d-flex justify-content-center">
                     <div class="d-inline-block">{{ tweet.retweetCount }} <i class="fas fa-sync-alt"></i></div>
                     <div class="d-inline-block ml-4">{{ tweet.favoriteCount }} <i class="far fa-heart"></i></div>
