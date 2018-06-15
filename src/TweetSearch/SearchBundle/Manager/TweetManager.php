@@ -159,7 +159,13 @@ class TweetManager
             $metaphoneTextA = metaphone($valueA->getText());
             $metaphoneTextB = metaphone($valueB->getText());
 
-            return levenshtein($metaphoneTextB, $searchMetaphone) - levenshtein($metaphoneTextA, $searchMetaphone);
+            try {
+                $levenshtein = levenshtein($metaphoneTextB, $searchMetaphone) - levenshtein($metaphoneTextA, $searchMetaphone);
+            } catch (\Exception $ex) {
+                return 0;
+            }
+
+            return $levenshtein;
         });
     }
 }

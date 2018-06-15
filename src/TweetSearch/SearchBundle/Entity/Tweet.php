@@ -509,14 +509,12 @@ class Tweet
             if ($pos !== false && $pos === 0) {
                 preg_match_all($re, $word, $matches, PREG_SET_ORDER, 0);
 
-                dump($matches);
                 $textArray[$key] = '<a target="_blank" href="https://twitter.com/search?q='. urlencode($word) .'" class="text-info d-inline-block">' . $word . '</a>';
             }
 
             $pos = strpos($word, '@');
             if ($pos !== false && $pos === 0) {
                 preg_match_all($re, $word, $matches, PREG_SET_ORDER, 0);
-                dump($matches);
                 $textArray[$key] = '<a target="_blank" href="https://twitter.com/'. urlencode($matches[0][2]) .'" class="text-info d-inline-block">' . $word . '</a>';
             }
 
